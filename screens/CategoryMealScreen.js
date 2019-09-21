@@ -5,26 +5,36 @@ import {
   TextInput,
   Button,
   Platform,
+  FlatList,
   StyleSheet
 } from "react-native";
 
 import { CATEGORIES } from "../data/dummy-data";
+import { MEALS } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 
 const CategoryMealScreen = props => {
   const catKey = props.navigation.getParam("categoryKey");
-  const selectedCategory = CATEGORIES.find(cat => catKey === cat.key);
+  const selectedMeals = MEALS.filter(
+    meal => meal.categoryKeys.indexOf(catKey) >= 0
+  );
+
+  const renderMealItem = itemData => {
+    <View>
+      <Text> {itemData.item.title}</Text>
+    </View>;
+  };
 
   return (
     <View style={styles.screen}>
-      <Text> The CategoryMealScreen!</Text>
-      <Text>{selectedCategory.title}</Text>
-      <Button
+      <FlatList data={selectedMeals} renderItem={renderMealItem} />
+
+      {/* <Button
         title="Go to Details"
         onPress={() => {
           props.navigation.navigate("MealDetail");
         }}
-      />
+      /> */}
     </View>
   );
 };
